@@ -1,7 +1,5 @@
 import ee
 
-
-
 # Function to compute the seasonal median of the collection given a collection and season time
 def seasonalMedian(imageCollection,season):
     # Start date of the seasons where the first season is 1
