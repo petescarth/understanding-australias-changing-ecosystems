@@ -1,0 +1,12 @@
+# use glob syntax.
+syntax: glob
+*.orig
+*.rej
+*.pyc
+*~
+tmp/*
+
+# switch to regexp syntax.
+syntax: regexp
+.*\#.*\#$
+
