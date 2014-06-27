@@ -3,9 +3,9 @@ import ee
 # Function to compute the seasonal median of the collection given a collection and season time
 def seasonalMedian(imageCollection,season):
     # Start date of the seasons where the first season is 1
-    startDate = ee.Date.fromYMD(1988,1,1).advance(3 * (season - 1),'month');
+    startDate = ee.Date.fromYMD(1988,1,1).advance(3 * (season - 1),'month')
     # Seasonal Increment - 3 months from the starting date
-    endDate = startDate.advance(3,'month');
+    endDate = startDate.advance(3,'month')
     # Double Check the Logic
     # print "%s Days" % ((endDate.getInfo()['value']-startDate.getInfo()['value'])/(1000*3600*24))
     # Select the TOA-adjusted L1T scenes
