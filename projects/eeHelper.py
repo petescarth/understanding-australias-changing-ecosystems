@@ -1,4 +1,17 @@
-import ee
+import ee, datetime
+
+# Function to compute a three month median of the collection centred around given time
+def nominalMedian(imageCollection,nominalDate):
+    sampleDaysRange = 45
+    # Start date 
+    startDate = nominalDate - datetime.timedelta(days=sampleDaysRange)
+    # End date
+    endDate = nominalDate + datetime.timedelta(days=sampleDaysRange)
+    # Select the TOA-adjusted L1T scenes
+    #print "From " +startDate.strftime('%d/%m/%Y') + " to " + endDate.strftime('%d/%m/%Y')
+    landsatCollection = ee.ImageCollection(imageCollection).filterDate(startDate, endDate);
+    # create an image from the collection
+    return landsatCollection.median()
 
 # Function to compute the seasonal median of the collection given a collection and season time
 def seasonalMedian(imageCollection,season):
@@ -12,6 +25,7 @@ def seasonalMedian(imageCollection,season):
     landsatCollection = ee.ImageCollection(imageCollection).filterDate(startDate, endDate);
     # create an image from the collection
     return landsatCollection.median()
+
 
 # Function to rescale the image to RSC TOA and compute the image transforms
 # Uses collection = 'LANDSAT/LT5_L1T_TOA' if season < 95  else 'LANDSAT/LE7_L1T_TOA'
@@ -112,7 +126,6 @@ def startEE():
   # Read the service account details
   myfile = open(serviceAccountLocation, "r")
   serviceAccount=myfile.read().replace('\n', '')
-  print 'Using: ' + serviceAccount
   # Init the EE interface
   ee.Initialize(ee.ServiceAccountCredentials(serviceAccount,keyLocation))
   print "Initialized EE"
