@@ -14,40 +14,41 @@ def seasonalMedian(imageCollection,season):
     return landsatCollection.median()
 
 # Function to rescale the image to RSC TOA and compute the image transforms
+# Uses collection = 'LANDSAT/LT5_L1T_TOA' if season < 95  else 'LANDSAT/LE7_L1T_TOA'
 # TODO: Recompute algorithm based on EE percentile composite calibration to remove operation count below
 def applyRSCtransforms(toaImage):
     # Select the algorithm bands and rescale to Qld RSC values
     gains = ee.Image([325.0, 345.0, 290.0, 425.0, 275.0]);
     offsets = ee.Image([1, 1, 6, 6, 6]);
-    useBands = toaImage.select("20", "30", "40", "50","70").multiply(gains).add(offsets).divide(256);
+    useBands = toaImage.select("B2", "B3", "B4", "B5","B7").multiply(gains).add(offsets).divide(256);
     logBands = useBands.log();
     # Combine the bands into a new image
     return ee.Image.cat(
-      useBands.expression("b('20') * b('30')"),
-      useBands.expression("b('20') * b('40')"),
-      useBands.expression("b('20') * b('50')"),
-      useBands.expression("b('20') * b('70')"),
-      useBands.expression("b('20') * logs", {'logs': logBands}),
-      useBands.expression("b('30') * b('40')"),
-      useBands.expression("b('30') * b('50')"),
-      useBands.expression("b('30') * b('70')"),
-      useBands.expression("b('30') * logs", {'logs': logBands}),
-      useBands.expression("b('40') * b('50')"),
-      useBands.expression("b('40') * b('70')"),
-      useBands.expression("b('40') * logs", {'logs': logBands}),
-      useBands.expression("b('50') * b('70')"),
-      useBands.expression("b('50') * logs", {'logs': logBands}),
-      useBands.expression("b('70') * logs", {'logs': logBands}),
-      logBands.expression("b('20') * b('30')"),
-      logBands.expression("b('20') * b('40')"),
-      logBands.expression("b('20') * b('50')"),
-      logBands.expression("b('20') * b('70')"),
-      logBands.expression("b('30') * b('40')"),
-      logBands.expression("b('30') * b('50')"),
-      logBands.expression("b('30') * b('70')"),
-      logBands.expression("b('40') * b('50')"),
-      logBands.expression("b('40') * b('70')"),
-      logBands.expression("b('50') * b('70')"),
+      useBands.expression("b('B2') * b('B3')"),
+      useBands.expression("b('B2') * b('B4')"),
+      useBands.expression("b('B2') * b('B5')"),
+      useBands.expression("b('B2') * b('B7')"),
+      useBands.expression("b('B2') * logs", {'logs': logBands}),
+      useBands.expression("b('B3') * b('B4')"),
+      useBands.expression("b('B3') * b('B5')"),
+      useBands.expression("b('B3') * b('B7')"),
+      useBands.expression("b('B3') * logs", {'logs': logBands}),
+      useBands.expression("b('B4') * b('B5')"),
+      useBands.expression("b('B4') * b('B7')"),
+      useBands.expression("b('B4') * logs", {'logs': logBands}),
+      useBands.expression("b('B5') * b('B7')"),
+      useBands.expression("b('B5') * logs", {'logs': logBands}),
+      useBands.expression("b('B7') * logs", {'logs': logBands}),
+      logBands.expression("b('B2') * b('B3')"),
+      logBands.expression("b('B2') * b('B4')"),
+      logBands.expression("b('B2') * b('B5')"),
+      logBands.expression("b('B2') * b('B7')"),
+      logBands.expression("b('B3') * b('B4')"),
+      logBands.expression("b('B3') * b('B5')"),
+      logBands.expression("b('B3') * b('B7')"),
+      logBands.expression("b('B4') * b('B5')"),
+      logBands.expression("b('B4') * b('B7')"),
+      logBands.expression("b('B5') * b('B7')"),
       useBands,
       logBands,
       ee.Image(1.3))
@@ -105,8 +106,14 @@ class progressBar:
 
 # Function to initialise the EE using a service account and key
 def startEE():
-  serviceAccount = '252101174119@developer.gserviceaccount.com'
+  # The location of the EE credentials
+  serviceAccountLocation = '../../.eeAccount'
   keyLocation = '../../.key'
+  # Read the service account details
+  myfile = open(serviceAccountLocation, "r")
+  serviceAccount=myfile.read().replace('\n', '')
+  print 'Using: ' + serviceAccount
+  # Init the EE interface
   ee.Initialize(ee.ServiceAccountCredentials(serviceAccount,keyLocation))
   print "Initialized EE"
 
