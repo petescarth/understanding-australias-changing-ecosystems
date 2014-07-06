@@ -1,4 +1,4 @@
-Year,SiteName,TripNo,MonthYear,Date,SiteGrid,FID,Species,Family,AvgOf%cover,AvgOfFL,AvgOfSeed,dead/alive
+Year,SiteName,TripNo,MonthYear,Date,SiteGrid,FID,Species,Family,AvgOfCover,AvgOfFL,AvgOfSeed,deadOrAlive
 1993,Main Camp,18,Oct.93,1993-10-01,MC1,9,Calandrinia balonensis,Calandrinia,1,0.5,0,Alive
 1993,Main Camp,18,Oct.93,1993-10-01,MC1,9,Eremophila longifolia,Eremophila,10,0,1,Alive
 1993,Main Camp,18,Oct.93,1993-10-01,MC1,9,Euphorbia drummondii,Euphorbia,1,1,0,Alive
