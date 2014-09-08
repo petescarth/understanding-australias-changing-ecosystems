@@ -2,7 +2,7 @@ import ee, datetime
 
 # Function to compute a three month median of the collection centred around given time
 def nominalMedian(imageCollection,nominalDate):
-    sampleDaysRange = 45
+    sampleDaysRange = 60
     # Start date 
     startDate = nominalDate - datetime.timedelta(days=sampleDaysRange)
     # End date
