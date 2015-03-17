@@ -116,17 +116,3 @@ class progressBar:
     def __str__(self):
         return str(self.prog_bar)
 
-
-
-# Function to initialise the EE using a service account and key
-def startEE():
-  # The location of the EE credentials
-  serviceAccountLocation = '../../.eeAccount'
-  keyLocation = '../../.key'
-  # Read the service account details
-  myfile = open(serviceAccountLocation, "r")
-  serviceAccount=myfile.read().replace('\n', '')
-  # Init the EE interface
-  ee.Initialize(ee.ServiceAccountCredentials(serviceAccount,keyLocation))
-  print "Initialized EE"
-
